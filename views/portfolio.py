@@ -126,7 +126,7 @@ def render():
     sorted_el = np.sort(df["EL"].values)
     cumulative_loans = np.linspace(0, 1, len(sorted_el))
     cumulative_el    = np.cumsum(sorted_el) / sorted_el.sum()
-    gini = 1 - 2 * np.trapz(cumulative_el, cumulative_loans)
+    gini = 1 - 2 * np.trapezoid(cumulative_el, cumulative_loans)
 
     fig6 = go.Figure()
     fig6.add_trace(go.Scatter(x=cumulative_loans, y=cumulative_el,
