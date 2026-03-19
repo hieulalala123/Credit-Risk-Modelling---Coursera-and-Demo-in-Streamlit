@@ -36,10 +36,11 @@ def render():
                 border-left: 5px solid #1e88e5; margin-bottom:2rem;">
         <h3 style="color:#1e3a5f; margin:0 0 .6rem; font-size:1.05rem;">🎯 Về Demo này</h3>
         <p style="color:#444; margin:0; line-height:1.8; font-size:.92rem;">
-            Demo này mô phỏng một hệ thống đánh giá rủi ro tín dụng hoàn chỉnh theo chuẩn <strong>Basel II</strong>.
-            Từ dữ liệu vay tiêu dùng của LendingClub, chúng tôi xây dựng 3 model độc lập —
-            <strong>PD, LGD, EAD</strong> — rồi kết hợp thành chỉ số <strong>Expected Loss (EL)</strong>
-            dùng để ra quyết định phê duyệt và định giá khoản vay.
+            This is a demo of a credit risk modeling system built with Python and Streamlit.
+            It uses consumer loan data from LendingClub (2007–2014) and includes three core models:
+            PD, LGD, and EAD — along with portfolio analysis and interactive visualizations.
+            This tool lets you explore how different borrower characteristics affect credit risk
+            and how these models can be applied in practice.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -52,16 +53,16 @@ def render():
          "Feature engineering · WoE encoding · Binning · Missing value imputation",
          "75 raw features → clean training matrix"),
         ("02", "PD Model", "#8b5cf6",
-         "Logistic Regression với p-values · WoE-encoded features · Grade / DTI / Income",
+         "Logistic Regression · WoE-encoded features · Grade / DTI / Income",
          "Output: P(default) ∈ [0,1] · AUROC = 0.861"),
         ("03", "LGD Model", "#f59e0b",
          "Two-stage: Logistic (P(recovery>0)) × Linear Regression (recovery rate)",
          "Output: Loss Given Default ∈ [0,1]"),
         ("04", "EAD Model", "#10b981",
-         "Credit Conversion Factor (CCF) · Linear Regression trên defaulted loans",
+         "Credit Conversion Factor (CCF) · Linear Regression on defaulted loans",
          "Output: EAD = CCF × Funded Amount"),
         ("05", "Expected Loss", "#ef4444",
-         "Tổng hợp 3 model · Phân tích danh mục · Stress testing · Capital allocation",
+         "ECL",
          "Output: EL = PD × LGD × EAD"),
     ]
     for num, title, color, desc, output in steps:
@@ -141,7 +142,7 @@ def render():
         st.markdown('<div class="section-title">📦 Dataset</div>', unsafe_allow_html=True)
         rows = [
             ("🗂️", "Nguồn",         "LendingClub 2007–2014"),
-            ("📋", "Số records",     "466,285 khoản vay"),
+            ("📋", "Số records",     "466,285 loans"),
             ("📌", "Features gốc",   "75 features"),
             ("🎯", "Target",         "good_bad  (0=default / 1=good)"),
             ("✂️", "Train/Test",     "80% / 20%  (random_state=12)"),
@@ -190,7 +191,7 @@ def render():
         ("💰", "Expected Loss", "#ef4444",
          "Nhập thông số khoản vay → nhận ngay PD · LGD · EAD · EL. Sensitivity analysis theo lãi suất & grade."),
         ("📁", "Portfolio", "#10b981",
-         "Phân tích tổng danh mục 500 khoản vay mô phỏng: Lorenz curve, heatmap rủi ro, phân bố EL."),
+         "Phân tích tổng danh mục 500 khoản vay mô phỏng: Lorenz curve, heatmap rủi ro, phân bố EL. -- Test"),
     ]
     for col, (icon, title, color, desc) in zip([c1, c2, c3], cards):
         with col:
@@ -205,7 +206,7 @@ def render():
                 <div style="margin-top:1.1rem;">
                     <span style="background:{color}18; color:{color}; font-size:.77rem;
                                  font-weight:600; padding:.3rem .9rem; border-radius:50px;">
-                        👈 Chọn từ sidebar
+                        👈 Choose from sidebar
                     </span>
                 </div>
             </div>
